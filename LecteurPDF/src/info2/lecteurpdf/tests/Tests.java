@@ -9,6 +9,8 @@ public class Tests {
 
 		System.out.println("Alexis est nul");
 
+		System.out.println("Audric est encore plus nul");
+
 	}
 
 }
