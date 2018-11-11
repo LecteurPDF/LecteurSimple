@@ -7,12 +7,6 @@ public class Tests {
 
 		System.out.println("super");
 
-		System.out.println("test");
-
-		System.out.println("test");
-
-		System.out.println("test");
-
 	}
 
 }
