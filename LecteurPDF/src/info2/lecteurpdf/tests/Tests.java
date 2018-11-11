@@ -7,6 +7,8 @@ public class Tests {
 
 		System.out.println("SUPer");
 
+		System.out.println("NUL");
+
 	}
 
 }
