@@ -4,7 +4,6 @@ import java.io.File;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -18,7 +17,7 @@ public class ControleuseFenetre {
     @FXML
     void changerFichier(ActionEvent event) {
 
-    	final FileChooser choixFichier = new FileChooser();
+    	final FileChooser choixFichier = new FileChooser(); // Choisisseur de fichier
 
     	/* Extension obligatoire : .PDF*/
     	FileChooser.ExtensionFilter filtreFichierPdf = new FileChooser.ExtensionFilter("Fichier PDF (*.pdf)", "*.pdf");
