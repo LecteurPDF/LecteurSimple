@@ -27,7 +27,12 @@ public class ControleuseFenetre {
     	File file = choixFichier.showOpenDialog(new Stage());
     	System.out.println(file);
 
-    	affichageImg.setImage(OutilLecture.getPagePdfToImg(file.getAbsolutePath(), 5).getImage());
+    	try {
+    		affichageImg.setImage(OutilLecture.getPagePdfToImg(file.getAbsolutePath(), 0).getImage());
+    		System.out.println("Page fini de chargé");
+    	} catch(NullPointerException e) {
+    		System.out.println("Aucun fichier selectionné");
+    	}
     }
 
 }
