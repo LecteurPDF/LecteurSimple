@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -33,7 +35,7 @@
             <SeparatorMenuItem mnemonicParsing="false" />
             <MenuItem disable="true" mnemonicParsing="false" text="Preferences…" />
             <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem disable="true" mnemonicParsing="false" text="Quitter" />
+            <MenuItem mnemonicParsing="false" onAction="#fermetureFenetre" text="Quitter" />
           </items>
         </Menu>
         <Menu mnemonicParsing="false" text="Affichage">
@@ -62,15 +64,18 @@
     </MenuBar>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
          <children>
-            <ScrollPane prefHeight="364.0" prefWidth="640.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <ScrollPane layoutY="50.0" prefHeight="302.0" prefWidth="640.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="669.0" prefWidth="621.0">
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="354.0" prefWidth="621.0">
                      <children>
-                        <ImageView fx:id="affichageImg" fitHeight="366.0" fitWidth="640.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <ImageView fx:id="affichageImg" fitHeight="213.0" fitWidth="640.0" layoutY="153.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="303.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-19.0" AnchorPane.topAnchor="153.0" />
                      </children>
                   </AnchorPane>
               </content>
             </ScrollPane>
+            <Button fx:id="btnPrecPage" layoutX="206.0" layoutY="14.0" mnemonicParsing="false" onAction="#precedentePage" text="&lt;" />
+            <Button fx:id="btnNextPage" layoutX="385.0" layoutY="14.0" mnemonicParsing="false" onAction="#prochainePage" text="&gt;" />
+            <TextField fx:id="txbNbPage" layoutX="257.0" layoutY="14.0" onAction="#nbPage" prefHeight="31.0" prefWidth="110.0" />
          </children>
     </AnchorPane>
   </children>

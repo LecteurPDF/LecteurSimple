@@ -2,14 +2,31 @@ package info2.lecteurpdf.tests;
 
 import java.io.File;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 public class ControleurPrincipal {
 
+	private OutilLecture pdf = new OutilLecture();
+
+    @FXML
+    private Button btnPrecPage;
+
+    @FXML
+    private Button btnNextPage;
+
+    @FXML
+    private TextField txbNbPage;
+
+    @FXML
+    private AnchorPane emplacementImage;
 
     @FXML
     private ImageView affichageImg;
@@ -28,9 +45,42 @@ public class ControleurPrincipal {
     	System.out.println(file);
 
     	if(file != null) {
-    		affichageImg.setImage(OutilLecture.getPagePdfToImg(file.getAbsolutePath(), 0).getImage());
+
+    		pdf = new OutilLecture(file.getAbsolutePath());
+
+    		affichageImg.setImage(pdf.getPagePdfToImg(0).getImage());
+
+    		//affichageImg.fitWidthProperty().bind(emplacementImage.widthProperty());
+
+    	    //pane.setCenter(affichageImg);
+
     		System.out.println("Page fini de chargé");
     	}
+    }
+
+    @FXML
+    void precedentePage(ActionEvent event) {
+    	affichageImg.setImage(pdf.getPrecPage().getImage());
+    	txbNbPage.setText(Integer.toString(pdf.getPagesCour()));
+    }
+
+    @FXML
+    void prochainePage(ActionEvent event) {
+    	affichageImg.setImage(pdf.getNextPage().getImage());
+    	txbNbPage.setText(Integer.toString(pdf.getPagesCour()));
+    }
+
+    @FXML
+    void nbPage(ActionEvent event) {
+    	affichageImg.setImage(pdf.getPagePdfToImg(Integer.parseInt(txbNbPage.getText())).getImage());
+    	txbNbPage.setText(Integer.toString(pdf.getPagesCour()));
+    }
+
+    @FXML
+    void fermetureFenetre(ActionEvent event) {
+    	//TODO: Gerer la fermeture général
+    	pdf.close();
+    	Platform.exit();
     }
 
 }
