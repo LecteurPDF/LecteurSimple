@@ -8,26 +8,38 @@ import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 
 
+/**
+ * TODO commenter les responsabilités de cette classe
+ * @author Ayzoh
+ *
+ */
 public class Main extends Application {
-	@Override
-	public void start(Stage primaryStage) {
-		try {
-			/* Import FXML */
-			VBox root = (VBox) FXMLLoader.load(getClass().getResource("maquette.fxml"));
-			Scene scene = new Scene(root,900,600);
+    @Override
+    public void start(Stage primaryStage) {
+        try {
+            /* PdfRenderer -> Plus rapide -> java 8 ou +*/
+            System.setProperty("sun.java2d.cmm", "sun.java2d.cmm.kcms.KcmsServiceProvider");
 
-			//scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-			primaryStage.setTitle("Test lecture pdf");
+            /* Import FXML */
+            VBox root = (VBox) FXMLLoader.load(getClass().getResource("maquette.fxml"));
+            Scene scene = new Scene(root,900,600);
 
-			primaryStage.setScene(scene);
-			primaryStage.show();
+            //scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+            primaryStage.setTitle("Test lecture pdf");
 
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-	}
+            primaryStage.setScene(scene);
+            primaryStage.show();
 
-	public static void main(String[] args) {
-		launch(args);
-	}
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * TODO commenter le rôle de cette méthode
+     * @param args
+     */
+    public static void main(String[] args) {
+        launch(args);
+    }
 }
