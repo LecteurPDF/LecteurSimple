@@ -37,6 +37,8 @@ public class ControleurPrincipal {
 	/** Elements du fichier pdf ouvert en cours ( fichier et page affichée en ce moment ) */
 	private OutilLecture pdf = new OutilLecture();
 
+	private Preference pref = new Preference();
+
 	@FXML
 	private VBox parentVBox;
 
@@ -183,19 +185,17 @@ public class ControleurPrincipal {
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader();
 			fxmlLoader.setLocation(getClass().getResource("preference.fxml"));
-			/*
-			 * if "fx:controller" is not set in fxml
-			 * fxmlLoader.setController(NewWindowController);
-			 */
+
 			Scene scene = new Scene(fxmlLoader.load(), 300, 500);
 			Stage stage = new Stage();
 			stage.setTitle("Préférence - Lecteur PDF");
 			stage.setScene(scene);
+
 			stage.setResizable(false);
 
 			/* Fenetre modale */
 			stage.initOwner( parentVBox.getScene().getWindow() );
-			stage.initModality(Modality.APPLICATION_MODAL);
+			stage.initModality( Modality.APPLICATION_MODAL );
 			stage.showAndWait();
 		} catch (IOException e) {
 			//TODO: Voir classe Logger
