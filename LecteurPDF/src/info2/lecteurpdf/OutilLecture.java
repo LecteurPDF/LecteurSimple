@@ -2,7 +2,7 @@
  * OutilLecture.java                            22/11/2018
  */
 
-package info2.lecteurpdf.tests;
+package info2.lecteurpdf;
 
 import java.awt.image.BufferedImage;
 import java.io.File;

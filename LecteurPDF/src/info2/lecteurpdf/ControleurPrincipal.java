@@ -2,18 +2,27 @@
  * ControleurPrincipal.java                            22/11/2018
  */
 
-package info2.lecteurpdf.tests;
+package info2.lecteurpdf;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+
+import com.sun.javafx.logging.Logger;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
@@ -25,6 +34,9 @@ public class ControleurPrincipal {
 
     /** Elements du fichier pdf ouvert en cours ( fichier et page affichée en ce moment ) */
     private OutilLecture pdf = new OutilLecture();
+
+    @FXML
+    private VBox parentVBox;
 
     /** Permet d'accéder à la page précédente */
     @FXML
@@ -130,6 +142,31 @@ public class ControleurPrincipal {
         /* On met l'ImageView à la bonne échelle */
         resize(affichageImg);
         txbNbPage.setText(Integer.toString(pdf.getPagesCour()));
+    }
+
+    @FXML
+    void ouvrirPref(ActionEvent event) {
+    	//TODO: Fenetre preference
+    	try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(getClass().getResource("preference.fxml"));
+            /*
+             * if "fx:controller" is not set in fxml
+             * fxmlLoader.setController(NewWindowController);
+             */
+            Scene scene = new Scene(fxmlLoader.load(), 300, 500);
+            Stage stage = new Stage();
+            stage.setTitle("Préférence - Lecteur PDF");
+            stage.setScene(scene);
+
+            /* Fenetre modale */
+            stage.initOwner( parentVBox.getScene().getWindow() );
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+        } catch (IOException e) {
+            //TODO: Voir classe Logger
+        	e.printStackTrace();
+        }
     }
 
     /**
