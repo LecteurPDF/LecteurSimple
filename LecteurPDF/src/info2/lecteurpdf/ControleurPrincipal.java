@@ -73,7 +73,7 @@ public class ControleurPrincipal {
 
 		KeyCode entreeClavier = event.getCode();
 
-		if (entreeClavier == KeyCode.getKeyCode(prefs.get("TOUCHE_PAGE_SUIVANTE", ""))) {
+		if (entreeClavier == KeyCode.getKeyCode(prefs.get("TOUCHE_PAGE_SUIVANTE", KeyCode.CHANNEL_DOWN.toString() ))) {
 			affichageImg.setImage(pdf.getPrecPage().getImage());
 			/* On met l'ImageView à la bonne échelle */
 			resize(affichageImg);
@@ -104,26 +104,11 @@ public class ControleurPrincipal {
 		}
 	}
 
-	/**
-	 * Permet de définir le fichier que l'on va afficher
-	 * @param event
-	 */
-	@FXML
-	void changerFichier(ActionEvent event) {
-
-		final FileChooser choixFichier = new FileChooser(); // Choisisseur de fichier
-
-		/* Extension obligatoire : .PDF*/
-		FileChooser.ExtensionFilter filtreFichierPdf = new FileChooser.ExtensionFilter("Fichier PDF (*.pdf)", "*.pdf");
-		choixFichier.getExtensionFilters().add(filtreFichierPdf);
-
-		/* Ouverture de la fenetre pour choix du fichier */
-		File file = choixFichier.showOpenDialog(new Stage());
-
+	private void chargementFichier(File fich) {
 		/* Si le fichier existe, on l'affiche */
-		if(file != null) {
+		if(fich != null) {
 
-			pdf = new OutilLecture(file.getAbsolutePath()); // On crée l'objet avec le lien du fichier pdf
+			pdf = new OutilLecture(fich.getAbsolutePath()); // On crée l'objet avec le lien du fichier pdf
 
 			// affichageImg.imageProperty().set(null); TODO : lag sur gros fichiers
 			affichageImg.setImage(pdf.getPagePdfToImg(0).getImage()); // On met l'image sur l'écran
@@ -140,6 +125,40 @@ public class ControleurPrincipal {
 		}
 	}
 
+	/**
+	 * Permet de définir le fichier que l'on va afficher
+	 * @param event
+	 */
+	@FXML
+	void changerFichier(ActionEvent event) {
+
+		final FileChooser choixFichier = new FileChooser(); // Choisisseur de fichier
+
+		/* Extension obligatoire : .PDF*/
+		FileChooser.ExtensionFilter filtreFichierPdf = new FileChooser.ExtensionFilter("Fichier PDF (*.pdf)", "*.pdf");
+		choixFichier.getExtensionFilters().add(filtreFichierPdf);
+
+		/* Ouverture de la fenetre pour choix du fichier */
+		File file = choixFichier.showOpenDialog(new Stage());
+		prefs.put("DERNIER_FICHIER", file.getAbsolutePath());
+
+		chargementFichier(file);
+
+	}
+
+
+
+    @FXML
+    void chargerDernierFichier(ActionEvent event) {
+
+    	try {
+	    	//TODO: Afficher liste des fichiers ouvert
+	    	chargementFichier(new File(prefs.get("DERNIER_FICHIER", null)));
+    	} catch( NullPointerException e ) {
+
+    	}
+
+    }
 
 
 	/**
