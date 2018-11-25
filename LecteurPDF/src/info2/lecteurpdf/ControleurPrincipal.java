@@ -7,6 +7,7 @@ package info2.lecteurpdf;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
+import java.util.prefs.Preferences;
 
 import com.sun.javafx.logging.Logger;
 
@@ -20,6 +21,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
@@ -37,7 +39,7 @@ public class ControleurPrincipal {
 	/** Elements du fichier pdf ouvert en cours ( fichier et page affichée en ce moment ) */
 	private OutilLecture pdf = new OutilLecture();
 
-	private Preference pref = new Preference();
+	private Preferences prefs = Main.prefs;
 
 	@FXML
 	private VBox parentVBox;
@@ -73,7 +75,21 @@ public class ControleurPrincipal {
 	 */
 	@FXML
 	void entreeClavier(KeyEvent event) {
+
+
+		if (event.getCode() == KeyCode.getKeyCode(prefs.get("TOUCHE_PAGE_SUIVANTE", ""))) {
+			affichageImg.setImage(pdf.getPrecPage().getImage());
+			/* On met l'ImageView à la bonne échelle */
+			resize(affichageImg);
+			txbNbPage.setText(Integer.toString(pdf.getPagesCour()));
+
+		} else {
+			System.out.println("Pas de preferences");
+		}
+
+		// Temporaire
 		switch (event.getCode()) {
+
 		case UP:
 			affichageImg.setImage(pdf.getNextPage().getImage());
 			/* On met l'ImageView à la bonne échelle */
@@ -87,7 +103,6 @@ public class ControleurPrincipal {
 			txbNbPage.setText(Integer.toString(pdf.getPagesCour()));
 			break;
 		default:
-			System.out.println("default");
 			break;
 
 		}

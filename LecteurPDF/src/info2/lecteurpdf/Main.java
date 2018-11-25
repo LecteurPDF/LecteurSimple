@@ -1,11 +1,14 @@
 package info2.lecteurpdf;
 
 
+import java.util.prefs.Preferences;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 
 
@@ -14,9 +17,16 @@ import javafx.scene.layout.VBox;
  *
  */
 public class Main extends Application {
+
+	static Preferences prefs;
+
     @Override
     public void start(Stage primaryStage) {
         try {
+
+        	// Crée une instance Preferences
+        	prefs = Preferences.userNodeForPackage(this.getClass());
+
             /* PdfRenderer -> Plus rapide -> java 8 ou +*/
             System.setProperty("sun.java2d.cmm", "sun.java2d.cmm.kcms.KcmsServiceProvider");
 
