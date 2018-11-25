@@ -8,7 +8,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 
 
@@ -22,10 +21,12 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        try {
 
-        	// Crée une instance Preferences
-        	prefs = Preferences.userNodeForPackage(this.getClass());
+    	// Crée une instance Preferences
+    	//TODO: Voir pourquoi erreur dans la console
+    	prefs = Preferences.userNodeForPackage(this.getClass());
+
+    	try {
 
             /* PdfRenderer -> Plus rapide -> java 8 ou +*/
             System.setProperty("sun.java2d.cmm", "sun.java2d.cmm.kcms.KcmsServiceProvider");
