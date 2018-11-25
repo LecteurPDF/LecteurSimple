@@ -76,8 +76,9 @@ public class ControleurPrincipal {
 	@FXML
 	void entreeClavier(KeyEvent event) {
 
+		KeyCode entreeClavier = event.getCode();
 
-		if (event.getCode() == KeyCode.getKeyCode(prefs.get("TOUCHE_PAGE_SUIVANTE", ""))) {
+		if (entreeClavier == KeyCode.getKeyCode(prefs.get("TOUCHE_PAGE_SUIVANTE", ""))) {
 			affichageImg.setImage(pdf.getPrecPage().getImage());
 			/* On met l'ImageView à la bonne échelle */
 			resize(affichageImg);
@@ -88,7 +89,7 @@ public class ControleurPrincipal {
 		}
 
 		// Temporaire
-		switch (event.getCode()) {
+		switch (entreeClavier) {
 
 		case UP:
 			affichageImg.setImage(pdf.getNextPage().getImage());

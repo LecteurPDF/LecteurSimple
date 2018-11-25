@@ -12,7 +12,7 @@ public class ControleurPreference {
 
     @FXML
     void avancerCtrl(ActionEvent event) {
-    	prefs.put("TOUCHE_PAGE_SUIVANTE", KeyCode.A.toString());
+    	prefs.put("TOUCHE_PAGE_SUIVANTE", KeyCode.Z.toString());
     }
 
     @FXML
