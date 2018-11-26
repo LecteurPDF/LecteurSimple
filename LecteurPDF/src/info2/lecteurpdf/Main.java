@@ -6,6 +6,7 @@ import java.util.prefs.Preferences;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
@@ -34,6 +35,8 @@ public class Main extends Application {
             /* Import FXML */
             VBox root = (VBox) FXMLLoader.load(getClass().getResource("principal.fxml"));
             Scene scene = new Scene(root,900,600);
+
+            primaryStage.initStyle(StageStyle.UNDECORATED);
 
             scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 

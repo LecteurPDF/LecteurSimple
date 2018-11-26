@@ -12,21 +12,25 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 /**
  * Permet de controler les différents objets de SceneBuilder
- * @author kevin.s
+ * @author sannac, vivier, pouzelgues, renoleau
  * @version 1.0
  */
 public class ControleurPrincipal {
@@ -59,6 +63,13 @@ public class ControleurPrincipal {
 	@FXML
 	private ImageView affichageImg;
 
+	/** Taille de la fenetre en vertical */
+	private double initialX;
+
+	/** Taille de la fenetre en horizontal */
+	private double initialY;
+
+
 	public void initialize() {
 
 	}
@@ -74,34 +85,19 @@ public class ControleurPrincipal {
 		KeyCode entreeClavier = event.getCode();
 
 		if (entreeClavier == KeyCode.getKeyCode(prefs.get("TOUCHE_PAGE_SUIVANTE", KeyCode.CHANNEL_DOWN.toString() ))) {
-			affichageImg.setImage(pdf.getPrecPage().getImage());
-			/* On met l'ImageView à la bonne échelle */
-			resize(affichageImg);
-			txbNbPage.setText(Integer.toString(pdf.getPagesCour()));
 
-		} else {
-			System.out.println("Pas de preferences");
-		}
-
-		// Temporaire
-		switch (entreeClavier) {
-
-		case UP:
 			affichageImg.setImage(pdf.getNextPage().getImage());
 			/* On met l'ImageView à la bonne échelle */
 			resize(affichageImg);
 			txbNbPage.setText(Integer.toString(pdf.getPagesCour()));
-			break;
-		case DOWN:
-			affichageImg.setImage(pdf.getPrecPage().getImage());
-			/* On met l'ImageView à la bonne échelle */
-			resize(affichageImg);
-			txbNbPage.setText(Integer.toString(pdf.getPagesCour()));
-			break;
-		default:
-			break;
+
+		} else if(entreeClavier == KeyCode.getKeyCode(prefs.get("TOUCHE_PAGE_PRECEDENTE", KeyCode.CHANNEL_UP.toString() ))){
+			//TODO
+		} else {
+			System.out.println("Pas de preferences");
 
 		}
+
 	}
 
 	private void chargementFichier(File fich) {
@@ -122,6 +118,9 @@ public class ControleurPrincipal {
 			//emplacementImage.getTopAnchor(affichageImg);
 
 			//System.out.println("Page fini de chargé");
+
+			txbNbPage.setText(Integer.toString(pdf.getPagesCour()));
+
 		}
 	}
 
@@ -148,17 +147,17 @@ public class ControleurPrincipal {
 
 
 
-    @FXML
-    void chargerDernierFichier(ActionEvent event) {
+	@FXML
+	void chargerDernierFichier(ActionEvent event) {
 
-    	try {
-	    	//TODO: Afficher liste des fichiers ouvert
-	    	chargementFichier(new File(prefs.get("DERNIER_FICHIER", null)));
-    	} catch( NullPointerException e ) {
+		try {
+			//TODO: Afficher liste des fichiers ouvert
+			chargementFichier(new File(prefs.get("DERNIER_FICHIER", null)));
+		} catch( NullPointerException e ) {
 
-    	}
+		}
 
-    }
+	}
 
 
 	/**
@@ -209,6 +208,10 @@ public class ControleurPrincipal {
 		txbNbPage.setText(Integer.toString(pdf.getPagesCour()));
 	}
 
+	/**
+	 * Permet l'ouverture de la fenétre préférence
+	 * @param event non utilisé
+	 */
 	@FXML
 	void ouvrirPref(ActionEvent event) {
 		//TODO: Fenetre preference
@@ -234,13 +237,71 @@ public class ControleurPrincipal {
 	}
 
 	/**
+	 * Permet de prendre la valeur initial de la fenetre
+	 * avant deplacement de celle ci
+	 * @param event entree souris
+	 */
+	@FXML
+	void clickPourDeplacement(MouseEvent event) {
+		if (event.getButton() != MouseButton.MIDDLE) {
+			initialX = event.getSceneX();
+			initialY = event.getSceneY();
+		}
+	}
+
+	/**
+	 * Permet de suivre la souris pendant le deplacement de la fenetre
+	 * @param me entree souris
+	 */
+	@FXML
+	public void dragPourDeplacement(MouseEvent me) {
+		if (me.getButton() != MouseButton.MIDDLE) {
+			parentVBox.getScene().getWindow().setX(me.getScreenX() - initialX);
+			parentVBox.getScene().getWindow().setY(me.getScreenY() - initialY);
+		}
+	}
+
+	/**
+	 * Permet d'agrandir la fenêtre
+	 * @param event
+	 */
+	@FXML
+	void agrandissementFenetre(ActionEvent event) {
+
+		Stage stage = (Stage) parentVBox.getScene().getWindow();
+
+		Screen screen = Screen.getPrimary(); // Ecran courant
+		Rectangle2D bounds = screen.getVisualBounds(); // Rectangle correspondant a la fenetre
+
+
+		/* Si la fenetre est deja en plein écran */
+		if( stage.getWidth() == bounds.getWidth()
+				&& stage.getHeight() == bounds.getHeight() ) {
+			//Mettre la fenetre dans la taille de lancement
+			stage.setWidth(900);
+			stage.setHeight(600);
+		} else {
+
+			// Mettre la taille de la fenetre a la taille de l'ecran
+			stage.setX(bounds.getMinX());
+			stage.setY(bounds.getMinY());
+			stage.setWidth(bounds.getWidth());
+			stage.setHeight(bounds.getHeight());
+		}
+	}
+
+	/**
 	 * Permet de fermer proprement le fichier et la fenêtre
 	 * @param event
 	 */
 	@FXML
 	void fermetureFenetre(ActionEvent event) {
-		//TODO Gerer la fermeture général
-		pdf.close();
+
+		try {
+			pdf.close();
+		} catch( NullPointerException e) {
+			System.out.println("Impossible de fermer le fichier");
+		}
 		Platform.exit();
 	}
 
