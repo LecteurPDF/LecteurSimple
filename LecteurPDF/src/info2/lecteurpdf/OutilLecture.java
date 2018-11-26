@@ -25,7 +25,7 @@ import javafx.scene.image.WritableImage;
  * A aucun moment on ne modifie le fichier, on ne fait que le lire
  * Le fichié est ouvert lorsque l'objet est crée, il sera fermé grâce à la méthode .close()
  * Le but de la classe est de transformer une page en ImageView et de gerer l'affichage de cette image
- * @author kevin.s
+ * @author sannac, vivier, pouzelgues, renoleau
  * @version 1
  */
 public class OutilLecture {
@@ -36,7 +36,10 @@ public class OutilLecture {
     /** La page que l'on est en train de lire, on commence à 0 */
     private int pageCour = 0;
 
-    /**
+    /** Nombre de page totale */
+    private int nbPages;
+
+	/**
      * Constructeur par défaut, sans argument
      */
     public OutilLecture() {
@@ -52,6 +55,7 @@ public class OutilLecture {
 
         try {
             document = PDDocument.load(new File(nomFichier));
+            nbPages = document.getNumberOfPages();
         } catch (InvalidPasswordException e) {
             // Protégé
             e.printStackTrace();
@@ -61,6 +65,14 @@ public class OutilLecture {
         }
 
     };
+
+    /**
+     * Retourne le nombre de pages totales du PDF courant
+     * @return nombre de pages du pdf
+     */
+    public int getNbPages() {
+		return nbPages;
+	}
 
     /**
      * Permet de transformer une page pdf en image ImageView
