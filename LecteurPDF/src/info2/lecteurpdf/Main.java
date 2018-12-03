@@ -36,7 +36,7 @@ public class Main extends Application {
             VBox root = (VBox) FXMLLoader.load(getClass().getResource("principal.fxml"));
             Scene scene = new Scene(root,900,600);
 
-            primaryStage.initStyle(StageStyle.UNDECORATED);
+//            primaryStage.initStyle(StageStyle.UNDECORATED);
 
             scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 

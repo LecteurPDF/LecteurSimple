@@ -60,8 +60,8 @@
                   <Image url="@../../icone.png" />
                </image>
             </ImageView>
-            <Button layoutX="607.0" layoutY="-1.0" mnemonicParsing="false" onAction="#fermetureFenetre" text="X" AnchorPane.rightAnchor="4.0" />
-            <Button layoutX="571.0" layoutY="-1.0" mnemonicParsing="false" onAction="#agrandissementFenetre" prefHeight="0.0" prefWidth="27.0" text="/" AnchorPane.rightAnchor="42.0" />
+            <Button layoutX="607.0" layoutY="-1.0" mnemonicParsing="false" onAction="#fermetureFenetre" text="X" visible="false" AnchorPane.rightAnchor="4.0" />
+            <Button layoutX="571.0" layoutY="-1.0" mnemonicParsing="false" onAction="#agrandissementFenetre" prefHeight="0.0" prefWidth="27.0" text="/" visible="false" AnchorPane.rightAnchor="42.0" />
          </children>
       </AnchorPane>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" onKeyPressed="#entreeClavier" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">

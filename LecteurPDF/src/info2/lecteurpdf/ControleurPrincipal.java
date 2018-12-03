@@ -270,23 +270,10 @@ public class ControleurPrincipal {
 
 		Stage stage = (Stage) parentVBox.getScene().getWindow();
 
-		Screen screen = Screen.getPrimary(); // Ecran courant
-		Rectangle2D bounds = screen.getVisualBounds(); // Rectangle correspondant a la fenetre
-
-
-		/* Si la fenetre est deja en plein écran */
-		if( stage.getWidth() == bounds.getWidth()
-				&& stage.getHeight() == bounds.getHeight() ) {
-			//Mettre la fenetre dans la taille de lancement
-			stage.setWidth(900);
-			stage.setHeight(600);
+		if( stage.isMaximized() ) {
+			stage.setMaximized(false);
 		} else {
-
-			// Mettre la taille de la fenetre a la taille de l'ecran
-			stage.setX(bounds.getMinX());
-			stage.setY(bounds.getMinY());
-			stage.setWidth(bounds.getWidth());
-			stage.setHeight(bounds.getHeight());
+			stage.setMaximized(true);
 		}
 	}
 
