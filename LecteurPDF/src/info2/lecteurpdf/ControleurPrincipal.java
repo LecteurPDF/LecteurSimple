@@ -202,7 +202,7 @@ public class ControleurPrincipal {
 	 */
 	@FXML
 	void nbPage(ActionEvent event) {
-		affichageImg.setImage(pdf.getPagePdfToImg(Integer.parseInt(txbNbPage.getText())).getImage());
+		affichageImg.setImage(pdf.getPagePdfToImg(Integer.parseInt(txbNbPage.getText()) - 1).getImage());
 		/* On met l'ImageView à la bonne échelle */
 		resize(affichageImg);
 		txbNbPage.setText(Integer.toString(pdf.getPagesCour()));

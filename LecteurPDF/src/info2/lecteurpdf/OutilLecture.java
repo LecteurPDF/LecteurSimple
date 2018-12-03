@@ -67,7 +67,7 @@ public class OutilLecture {
     };
 
     /**
-     * Retourne le nombre de pages totales du PDF courant
+     * Retourne le nombre de pages réel totales du PDF courant
      * @return nombre de pages du pdf
      */
     public int getNbPages() {
@@ -115,10 +115,19 @@ public class OutilLecture {
     }
 
     /**
+     * Pages courantes réel
+     * @return valeur de pageCour
+     */
+    public int getPagesCourReel() {
+        return pageCour;
+    }
+
+    /**
+     * Page courante
      * @return valeur de pageCour
      */
     public int getPagesCour() {
-        return pageCour;
+        return pageCour + 1;
     }
 
     /**
