@@ -8,6 +8,7 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -66,7 +67,14 @@
       </AnchorPane>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" onKeyPressed="#entreeClavier" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
          <children>
-            <ScrollPane layoutY="50.0" prefHeight="284.0" prefWidth="640.0" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
+            <ToolBar prefHeight="45.0" prefWidth="640.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+               <items>
+                  <Button fx:id="btnPrecPage" mnemonicParsing="false" onAction="#precedentePage" text="&lt;" />
+                  <TextField fx:id="txbNbPage" onAction="#nbPage" prefHeight="31.0" prefWidth="110.0" />
+                  <Button fx:id="btnNextPage" mnemonicParsing="false" onAction="#prochainePage" text="&gt;" />
+               </items>
+            </ToolBar>
+            <ScrollPane layoutY="46.0" pannable="true" prefHeight="288.0" prefWidth="640.0" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="46.0">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="280.0" prefWidth="621.0">
                      <children>
@@ -75,9 +83,6 @@
                   </AnchorPane>
               </content>
             </ScrollPane>
-            <Button fx:id="btnPrecPage" layoutX="206.0" layoutY="14.0" mnemonicParsing="false" onAction="#precedentePage" text="&lt;" />
-            <Button fx:id="btnNextPage" layoutX="385.0" layoutY="14.0" mnemonicParsing="false" onAction="#prochainePage" text="&gt;" />
-            <TextField fx:id="txbNbPage" layoutX="257.0" layoutY="14.0" onAction="#nbPage" prefHeight="31.0" prefWidth="110.0" />
          </children>
     </AnchorPane>
   </children>
