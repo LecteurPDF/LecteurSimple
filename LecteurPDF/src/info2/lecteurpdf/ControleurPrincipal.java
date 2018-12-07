@@ -8,11 +8,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.prefs.Preferences;
 
+import info2.lecteurpdf.OutilLecture.PageInexistante;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -25,7 +25,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 /**
@@ -86,10 +85,14 @@ public class ControleurPrincipal {
 
 		if (entreeClavier == KeyCode.getKeyCode(prefs.get("TOUCHE_PAGE_SUIVANTE", KeyCode.CHANNEL_DOWN.toString() ))) {
 
-			affichageImg.setImage(pdf.getNextPage().getImage());
-			/* On met l'ImageView à la bonne échelle */
-			resize(affichageImg);
-			txbNbPage.setText(Integer.toString(pdf.getPagesCour()));
+			try {
+				affichageImg.setImage(pdf.getNextPage().getImage());
+				/* On met l'ImageView à la bonne échelle */
+				resize(affichageImg);
+				txbNbPage.setText(Integer.toString(pdf.getPagesCour()));
+			} catch (PageInexistante e) {
+				System.out.println( e.getMessage() );
+			}
 
 		} else if(entreeClavier == KeyCode.getKeyCode(prefs.get("TOUCHE_PAGE_PRECEDENTE", KeyCode.CHANNEL_UP.toString() ))){
 			//TODO
@@ -101,26 +104,30 @@ public class ControleurPrincipal {
 	}
 
 	private void chargementFichier(File fich) {
-		/* Si le fichier existe, on l'affiche */
-		if(fich != null) {
+		try {
+			/* Si le fichier existe, on l'affiche */
+			if(fich != null) {
 
-			pdf = new OutilLecture(fich.getAbsolutePath()); // On crée l'objet avec le lien du fichier pdf
+				pdf = new OutilLecture(fich.getAbsolutePath()); // On crée l'objet avec le lien du fichier pdf
 
-			// affichageImg.imageProperty().set(null); TODO : lag sur gros fichiers
-			affichageImg.setImage(pdf.getPagePdfToImg(0).getImage()); // On met l'image sur l'écran
+				// affichageImg.imageProperty().set(null); TODO : lag sur gros fichiers
+				affichageImg.setImage(pdf.getPagePdfToImg(0).getImage()); // On met l'image sur l'écran
 
-			/* On met l'ImageView à la bonne échelle */
-			resize(affichageImg);
+				/* On met l'ImageView à la bonne échelle */
+				resize(affichageImg);
 
-			/* On met au centre */
-			// TODO Centrer image
+				/* On met au centre */
+				// TODO Centrer image
 
-			//emplacementImage.getTopAnchor(affichageImg);
+				//emplacementImage.getTopAnchor(affichageImg);
 
-			//System.out.println("Page fini de chargé");
+				//System.out.println("Page fini de chargé");
 
-			txbNbPage.setText(Integer.toString(pdf.getPagesCour()));
+				txbNbPage.setText(Integer.toString(pdf.getPagesCour()));
 
+			}
+		} catch (PageInexistante e) {
+			System.out.println( e.getMessage() );
 		}
 	}
 
@@ -178,10 +185,15 @@ public class ControleurPrincipal {
 	 */
 	@FXML
 	void precedentePage(ActionEvent event) {
-		affichageImg.setImage(pdf.getPrecPage().getImage());
-		/* On met l'ImageView à la bonne échelle */
-		resize(affichageImg);
-		txbNbPage.setText(Integer.toString(pdf.getPagesCour()));
+		try {
+			affichageImg.setImage(pdf.getPrecPage().getImage());
+			/* On met l'ImageView à la bonne échelle */
+			resize(affichageImg);
+			txbNbPage.setText(Integer.toString(pdf.getPagesCour()));
+		} catch (PageInexistante e) {
+			System.out.println( e.getMessage() );
+		}
+
 	}
 
 	/**
@@ -190,10 +202,15 @@ public class ControleurPrincipal {
 	 */
 	@FXML
 	void prochainePage(ActionEvent event) {
-		affichageImg.setImage(pdf.getNextPage().getImage());
-		/* On met l'ImageView à la bonne échelle */
-		resize(affichageImg);
-		txbNbPage.setText(Integer.toString(pdf.getPagesCour()));
+		try {
+			affichageImg.setImage(pdf.getNextPage().getImage());
+			/* On met l'ImageView à la bonne échelle */
+			resize(affichageImg);
+			txbNbPage.setText(Integer.toString(pdf.getPagesCour()));
+		} catch (PageInexistante e) {
+			System.out.println( e.getMessage() );
+		}
+
 	}
 
 	/**
@@ -202,10 +219,17 @@ public class ControleurPrincipal {
 	 */
 	@FXML
 	void nbPage(ActionEvent event) {
-		affichageImg.setImage(pdf.getPagePdfToImg(Integer.parseInt(txbNbPage.getText()) - 1).getImage());
-		/* On met l'ImageView à la bonne échelle */
-		resize(affichageImg);
-		txbNbPage.setText(Integer.toString(pdf.getPagesCour()));
+		try {
+			affichageImg.setImage(pdf.getPagePdfToImg(Integer.parseInt(txbNbPage.getText()) - 1).getImage());
+			/* On met l'ImageView à la bonne échelle */
+			resize(affichageImg);
+			txbNbPage.setText(Integer.toString(pdf.getPagesCour()));
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (PageInexistante e) {
+			System.out.println( e.getMessage() );
+		}
 	}
 
 	/**

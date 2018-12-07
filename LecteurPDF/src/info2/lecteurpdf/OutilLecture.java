@@ -39,6 +39,24 @@ public class OutilLecture {
     /** Nombre de page totale */
     private int nbPages;
 
+    /**
+     * Classe d'exception sur une page inexistante
+     *
+     */
+    public class PageInexistante extends Exception{
+    	/** Serial ID */
+		private static final long serialVersionUID = -2265324792417891853L;
+
+		/**
+    	 * Construit l'exception quand la page n'existe pas,
+    	 * qu'il y a depassement par exemple
+    	 * @param nbPage nombre de la page concerné
+    	 */
+    	public PageInexistante(int nbPage) {
+    		super("Page " + nbPage + " inexistante");
+    	}
+    }
+
 	/**
      * Constructeur par défaut, sans argument
      */
@@ -78,13 +96,14 @@ public class OutilLecture {
      * Permet de transformer une page pdf en image ImageView
      * @param page La page que l'on souhaite transformer
      * @return La page transformée en ImageView
+     * @throws PageInexistante
      */
-    public ImageView getPagePdfToImg( int page ) {
+    public ImageView getPagePdfToImg( int page ) throws PageInexistante {
 
         ImageView imageCentrale = new ImageView(); // L'image de la page pdf convertie
 
-        if(!pageCorrecte()) {
-            return getPagePdfToImg(pageCour);
+        if(!pageCorrecte(pageCour)) {
+        	throw new PageInexistante(pageCour+1);
         }
 
         /* Rendu de l'image */
@@ -133,8 +152,12 @@ public class OutilLecture {
     /**
      * Permet de changer la valeur de pageCour
      * @param page La nouvelle page que l'on affiche ( en cours )
+     * @throws PageInexistante
      */
-    public void setPagesCour(int page) {
+    public void setPagesCour(int page) throws PageInexistante {
+        if(!pageCorrecte(page)) {
+            throw new PageInexistante(page);
+        }
         pageCour = page;
     }
 
@@ -143,11 +166,13 @@ public class OutilLecture {
      * Si on est page 2 -> On renvoie la page 3
      * Page courante est incrémenté
      * @return La page suivante en ImageView
+     * @throws PageInexistante
      */
-    public ImageView getNextPage() {
-        if(pageCour < document.getNumberOfPages()-1) {
-            pageCour++;
+    public ImageView getNextPage() throws PageInexistante {
+        if(!pageCorrecte(pageCour+1)) {
+            throw new PageInexistante(pageCour+1);
         }
+        pageCour++;
         return getPagePdfToImg(pageCour);
 
     }
@@ -157,11 +182,14 @@ public class OutilLecture {
      * Si on est page 3 -> On renvoie la page 3
      * Page courante est décrémenté
      * @return La page précédente en ImageView
+     * @throws PageInexistante
      */
-    public ImageView getPrecPage() {
-        if(pageCour > 0) {
-            pageCour--;
+    public ImageView getPrecPage() throws PageInexistante {
+        if(!pageCorrecte(pageCour-1)) {
+            throw new PageInexistante(pageCour-1);
         }
+        pageCour--;
+
         return getPagePdfToImg(pageCour);
     }
 
@@ -169,8 +197,8 @@ public class OutilLecture {
      * Permet de définir si la pagecourante existe
      * @return true si elle existe, sinon false
      */
-    public boolean pageCorrecte() {
-        if( pageCour >= 0 && pageCour < document.getNumberOfPages() ) {
+    public boolean pageCorrecte(int page) {
+        if( page >= 0 && page <= document.getNumberOfPages() ) {
             return true;
         }
         return false;
