@@ -13,15 +13,20 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
@@ -55,8 +60,8 @@ public class ControleurPrincipal {
 	private TextField txbNbPage;
 
 	/** Là où la page est affichée */
-	@FXML
-	private AnchorPane emplacementImage;
+    @FXML
+    private ScrollPane scrollPaneImg;
 
 	/** La page que l'on affiche sous forme d'ImageView */
 	@FXML
@@ -111,10 +116,17 @@ public class ControleurPrincipal {
 				pdf = new OutilLecture(fich.getAbsolutePath()); // On crée l'objet avec le lien du fichier pdf
 
 				// affichageImg.imageProperty().set(null); TODO : lag sur gros fichiers
-				affichageImg.setImage(pdf.getPagePdfToImg(0).getImage()); // On met l'image sur l'écran
+				//affichageImg.setImage(pdf.getPagePdfToImg(0).getImage()); // On met l'image sur l'écran
+
+				//anchorPaneImg.getChildren().add(new ImageView(pdf.getPagePdfToImg(0).getImage()));
+
+				affichageImg = new ImageView(pdf.getPagePdfToImg(0).getImage());
+
+				scrollPaneImg.setContent(null);
+				scrollPaneImg.setContent(affichageImg);
 
 				/* On met l'ImageView à la bonne échelle */
-				resize(affichageImg);
+				//resize(affichageImg);
 
 				/* On met au centre */
 				// TODO Centrer image
@@ -173,8 +185,28 @@ public class ControleurPrincipal {
 	 * @return L'ImageView à la bonne taille
 	 */
 	private ImageView resize(ImageView toResize) {
-		toResize.setFitHeight(pdf.getDocument().getPage(pdf.getPagesCour()).getMediaBox().getHeight());
-		toResize.setFitWidth(pdf.getDocument().getPage(pdf.getPagesCour()).getMediaBox().getWidth());
+		 Image img = affichageImg.getImage();
+	        if (img != null) {
+	            double w = 0;
+	            double h = 0;
+
+	            double ratioX = affichageImg.getFitWidth() / img.getWidth();
+	            double ratioY = affichageImg.getFitHeight() / img.getHeight();
+
+	            double reducCoeff = 0;
+	            if(ratioX >= ratioY) {
+	                reducCoeff = ratioY;
+	            } else {
+	                reducCoeff = ratioX;
+	            }
+
+	            w = img.getWidth() * reducCoeff;
+	            h = img.getHeight() * reducCoeff;
+
+	            affichageImg.setX((affichageImg.getFitWidth() - w) / 2);
+	            affichageImg.setY((affichageImg.getFitHeight() - h) / 2);
+
+	        }
 		return toResize;
 	}
 
