@@ -76,10 +76,10 @@ public class OutilLecture {
             nbPages = document.getNumberOfPages();
         } catch (InvalidPasswordException e) {
             // Protégé
-            e.printStackTrace();
+        	Main.journaux.warning("FIchier protégé d'un mot de passe");
         } catch (IOException e) {
             // Fichier non trouvé
-            e.printStackTrace();
+            Main.journaux.warning("FIchier non trouvé");
         }
 
     };
@@ -120,7 +120,7 @@ public class OutilLecture {
 
         } catch (IOException e) {
             /* Problème lors de la lecture du fichier */
-            e.printStackTrace();
+            Main.journaux.warning("Probléme de lecture fihcier");
         }
 
         return imageCentrale;
@@ -213,7 +213,7 @@ public class OutilLecture {
             document.close();
         } catch (IOException e) {
             // Probléme fermeture
-            e.printStackTrace();
+            Main.journaux.warning("Pas de fermeture de fichier");
         }
     }
 

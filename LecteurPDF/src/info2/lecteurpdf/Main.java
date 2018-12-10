@@ -1,6 +1,7 @@
 package info2.lecteurpdf;
 
 
+import java.util.logging.Logger;
 import java.util.prefs.Preferences;
 
 import javafx.application.Application;
@@ -17,6 +18,8 @@ import javafx.scene.layout.VBox;
  *
  */
 public class Main extends Application {
+
+	public static Logger journaux = Logger.getLogger("Journaux de logs");
 
 	static Preferences prefs;
 
@@ -47,7 +50,7 @@ public class Main extends Application {
             primaryStage.show();
 
         } catch(Exception e) {
-            e.printStackTrace();
+            journaux.severe("Probléme lancement de l'app graphique");
         }
     }
 

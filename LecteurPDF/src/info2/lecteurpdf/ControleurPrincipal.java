@@ -17,7 +17,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -44,8 +43,8 @@ public class ControleurPrincipal {
 	@FXML
 	private VBox parentVBox;
 
-    @FXML
-    private BorderPane bpUnPdf;
+	@FXML
+	private BorderPane bpUnPdf;
 
 	/** Permet d'accéder à la page précédente */
 	@FXML
@@ -60,8 +59,8 @@ public class ControleurPrincipal {
 	private TextField txbNbPage;
 
 	/** Là où la page est affichée */
-    @FXML
-    private ScrollPane scrollPaneImg;
+	@FXML
+	private ScrollPane scrollPaneImg;
 
 	/** La page que l'on affiche sous forme d'ImageView */
 	private ImageView imageAfficher;
@@ -135,7 +134,7 @@ public class ControleurPrincipal {
 
 			}
 		} catch (PageInexistante e) {
-			System.out.println( e.getMessage() );
+			Main.journaux.warning("Page inexistante");
 		}
 	}
 
@@ -148,15 +147,20 @@ public class ControleurPrincipal {
 
 		final FileChooser choixFichier = new FileChooser(); // Choisisseur de fichier
 
-		/* Extension obligatoire : .PDF*/
+		/* Extension obligatoire : .PDF */
 		FileChooser.ExtensionFilter filtreFichierPdf = new FileChooser.ExtensionFilter("Fichier PDF (*.pdf)", "*.pdf");
 		choixFichier.getExtensionFilters().add(filtreFichierPdf);
+		try {
+			/* Ouverture de la fenêtre pour choix du fichier */
+			File file = choixFichier.showOpenDialog(new Stage());
+			prefs.put("DERNIER_FICHIER", file.getAbsolutePath());
 
-		/* Ouverture de la fenetre pour choix du fichier */
-		File file = choixFichier.showOpenDialog(new Stage());
-		prefs.put("DERNIER_FICHIER", file.getAbsolutePath());
 
-		chargementFichier(file);
+			chargementFichier(file);
+
+		} catch (NullPointerException e) {
+			Main.journaux.warning("Aucun fichier selectionné");
+		}
 
 	}
 
@@ -169,7 +173,7 @@ public class ControleurPrincipal {
 			//TODO: Afficher liste des fichiers ouvert
 			chargementFichier(new File(prefs.get("DERNIER_FICHIER", null)));
 		} catch( NullPointerException e ) {
-
+			Main.journaux.info("Aucun fichier en mémoire");
 		}
 
 	}
@@ -182,14 +186,14 @@ public class ControleurPrincipal {
 	private void setImagePrefs() {
 
 		imageAfficher.setPreserveRatio(true);
-//		imageAfficher.setFitWidth(400);
-//		imageAfficher.setFitHeight(300);
+		//		imageAfficher.setFitWidth(400);
+		//		imageAfficher.setFitHeight(300);
 
 		scrollPaneImg.setContent(null);
 		scrollPaneImg.setContent(imageAfficher);
 
-//        bpUnPdf.setPrefSize(400, 300);
-//        bpUnPdf.setCenter(imageAfficher);
+		//        bpUnPdf.setPrefSize(400, 300);
+		//        bpUnPdf.setCenter(imageAfficher);
 
 
 	}
@@ -207,7 +211,7 @@ public class ControleurPrincipal {
 			setImagePrefs();
 			txbNbPage.setText(Integer.toString(pdf.getPagesCour()));
 		} catch (PageInexistante e) {
-			System.out.println( e.getMessage() );
+			Main.journaux.warning("Page inexistante");
 		}
 
 	}
@@ -224,7 +228,7 @@ public class ControleurPrincipal {
 			setImagePrefs();
 			txbNbPage.setText(Integer.toString(pdf.getPagesCour()));
 		} catch (PageInexistante e) {
-			System.out.println( e.getMessage() );
+			Main.journaux.warning("Page inexistante");
 		}
 
 	}
@@ -242,9 +246,9 @@ public class ControleurPrincipal {
 			txbNbPage.setText(Integer.toString(pdf.getPagesCour()));
 		} catch (NumberFormatException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Main.journaux.warning("Format du nombre errroné");
 		} catch (PageInexistante e) {
-			System.out.println( e.getMessage() );
+			Main.journaux.warning("Page inexistante");
 		}
 	}
 
@@ -271,8 +275,7 @@ public class ControleurPrincipal {
 			stage.initModality( Modality.APPLICATION_MODAL );
 			stage.showAndWait();
 		} catch (IOException e) {
-			//TODO: Voir classe Logger
-			e.printStackTrace();
+			Main.journaux.severe("Probléme de lancement de la fenetre préférence");
 		}
 	}
 
@@ -327,7 +330,7 @@ public class ControleurPrincipal {
 		try {
 			pdf.close();
 		} catch( NullPointerException e) {
-			System.out.println("Impossible de fermer le fichier");
+
 		}
 		Platform.exit();
 	}
