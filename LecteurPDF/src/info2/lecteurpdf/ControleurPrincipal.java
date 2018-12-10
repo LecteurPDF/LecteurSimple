@@ -13,8 +13,6 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
@@ -25,8 +23,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
@@ -47,6 +44,9 @@ public class ControleurPrincipal {
 	@FXML
 	private VBox parentVBox;
 
+    @FXML
+    private BorderPane bpUnPdf;
+
 	/** Permet d'accéder à la page précédente */
 	@FXML
 	private Button btnPrecPage;
@@ -64,8 +64,7 @@ public class ControleurPrincipal {
     private ScrollPane scrollPaneImg;
 
 	/** La page que l'on affiche sous forme d'ImageView */
-	@FXML
-	private ImageView affichageImg;
+	private ImageView imageAfficher;
 
 	/** Taille de la fenetre en vertical */
 	private double initialX;
@@ -91,9 +90,9 @@ public class ControleurPrincipal {
 		if (entreeClavier == KeyCode.getKeyCode(prefs.get("TOUCHE_PAGE_SUIVANTE", KeyCode.CHANNEL_DOWN.toString() ))) {
 
 			try {
-				affichageImg.setImage(pdf.getNextPage().getImage());
+				imageAfficher.setImage(pdf.getNextPage().getImage());
 				/* On met l'ImageView à la bonne échelle */
-				resize(affichageImg);
+				setImagePrefs();
 				txbNbPage.setText(Integer.toString(pdf.getPagesCour()));
 			} catch (PageInexistante e) {
 				System.out.println( e.getMessage() );
@@ -115,23 +114,20 @@ public class ControleurPrincipal {
 
 				pdf = new OutilLecture(fich.getAbsolutePath()); // On crée l'objet avec le lien du fichier pdf
 
-				// affichageImg.imageProperty().set(null); TODO : lag sur gros fichiers
-				//affichageImg.setImage(pdf.getPagePdfToImg(0).getImage()); // On met l'image sur l'écran
+				// imageAfficher.imageProperty().set(null); TODO : lag sur gros fichiers
+				//imageAfficher.setImage(pdf.getPagePdfToImg(0).getImage()); // On met l'image sur l'écran
 
 				//anchorPaneImg.getChildren().add(new ImageView(pdf.getPagePdfToImg(0).getImage()));
 
-				affichageImg = new ImageView(pdf.getPagePdfToImg(0).getImage());
-
-				scrollPaneImg.setContent(null);
-				scrollPaneImg.setContent(affichageImg);
+				imageAfficher = new ImageView(pdf.getPagePdfToImg(0).getImage());
 
 				/* On met l'ImageView à la bonne échelle */
-				//resize(affichageImg);
+				setImagePrefs();
 
 				/* On met au centre */
 				// TODO Centrer image
 
-				//emplacementImage.getTopAnchor(affichageImg);
+				//emplacementImage.getTopAnchor(imageAfficher);
 
 				//System.out.println("Page fini de chargé");
 
@@ -180,34 +176,22 @@ public class ControleurPrincipal {
 
 
 	/**
-	 * Permet d'afficher en taille réelle *1.2 le document
-	 * @param toResize L'image que l'on souhaite redimensionner
-	 * @return L'ImageView à la bonne taille
+	 * Mettre en place les preferences a mettre sur dans l'interface
+	 * depuis l'ImageView imageAfficher
 	 */
-	private ImageView resize(ImageView toResize) {
-		 Image img = affichageImg.getImage();
-	        if (img != null) {
-	            double w = 0;
-	            double h = 0;
+	private void setImagePrefs() {
 
-	            double ratioX = affichageImg.getFitWidth() / img.getWidth();
-	            double ratioY = affichageImg.getFitHeight() / img.getHeight();
+		imageAfficher.setPreserveRatio(true);
+//		imageAfficher.setFitWidth(400);
+//		imageAfficher.setFitHeight(300);
 
-	            double reducCoeff = 0;
-	            if(ratioX >= ratioY) {
-	                reducCoeff = ratioY;
-	            } else {
-	                reducCoeff = ratioX;
-	            }
+		scrollPaneImg.setContent(null);
+		scrollPaneImg.setContent(imageAfficher);
 
-	            w = img.getWidth() * reducCoeff;
-	            h = img.getHeight() * reducCoeff;
+//        bpUnPdf.setPrefSize(400, 300);
+//        bpUnPdf.setCenter(imageAfficher);
 
-	            affichageImg.setX((affichageImg.getFitWidth() - w) / 2);
-	            affichageImg.setY((affichageImg.getFitHeight() - h) / 2);
 
-	        }
-		return toResize;
 	}
 
 
@@ -218,9 +202,9 @@ public class ControleurPrincipal {
 	@FXML
 	void precedentePage(ActionEvent event) {
 		try {
-			affichageImg.setImage(pdf.getPrecPage().getImage());
+			imageAfficher.setImage(pdf.getPrecPage().getImage());
 			/* On met l'ImageView à la bonne échelle */
-			resize(affichageImg);
+			setImagePrefs();
 			txbNbPage.setText(Integer.toString(pdf.getPagesCour()));
 		} catch (PageInexistante e) {
 			System.out.println( e.getMessage() );
@@ -235,9 +219,9 @@ public class ControleurPrincipal {
 	@FXML
 	void prochainePage(ActionEvent event) {
 		try {
-			affichageImg.setImage(pdf.getNextPage().getImage());
+			imageAfficher.setImage(pdf.getNextPage().getImage());
 			/* On met l'ImageView à la bonne échelle */
-			resize(affichageImg);
+			setImagePrefs();
 			txbNbPage.setText(Integer.toString(pdf.getPagesCour()));
 		} catch (PageInexistante e) {
 			System.out.println( e.getMessage() );
@@ -252,9 +236,9 @@ public class ControleurPrincipal {
 	@FXML
 	void nbPage(ActionEvent event) {
 		try {
-			affichageImg.setImage(pdf.getPagePdfToImg(Integer.parseInt(txbNbPage.getText()) - 1).getImage());
+			imageAfficher.setImage(pdf.getPagePdfToImg(Integer.parseInt(txbNbPage.getText()) - 1).getImage());
 			/* On met l'ImageView à la bonne échelle */
-			resize(affichageImg);
+			setImagePrefs();
 			txbNbPage.setText(Integer.toString(pdf.getPagesCour()));
 		} catch (NumberFormatException e) {
 			// TODO Auto-generated catch block
